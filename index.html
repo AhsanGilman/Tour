@@ -25,10 +25,6 @@
             font-size: 36px;
             font-weight: bold;
         }
-        header p {
-            font-size: 18px;
-            margin-top: 10px;
-        }
         section.hero {
             background: url('https://via.placeholder.com/1500x800') no-repeat center center;
             background-size: cover;
@@ -38,11 +34,6 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-        section.hero h2 {
-            font-size: 48px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         section.gallery {
             padding: 50px 10%;
@@ -68,56 +59,6 @@
         .gallery-images img:hover {
             transform: scale(1.05);
         }
-        section.contact {
-            padding: 50px 10%;
-            background: #ecf0f1;
-            text-align: center;
-        }
-        section.contact h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        section.contact form {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        section.contact input, section.contact textarea {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        section.contact button {
-            background-color: #2C3E50;
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        section.contact button:hover {
-            background-color: #34495E;
-        }
-        footer {
-            background-color: #2C3E50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        footer p {
-            font-size: 16px;
-        }
-        footer a {
-            color: #ecf0f1;
-            text-decoration: none;
-        }
     </style>
 </head>
 <body>
@@ -136,30 +77,32 @@
     <!-- Gallery Section -->
     <section class="gallery">
         <h2>Photo Gallery</h2>
-        <div class="gallery-images">
-            <!-- Add your images here -->
-            <img src="https://via.placeholder.com/300" alt="Gallery Image 1">
-            <img src="https://via.placeholder.com/300" alt="Gallery Image 2">
-            <img src="https://via.placeholder.com/300" alt="Gallery Image 3">
-            <img src="https://via.placeholder.com/300" alt="Gallery Image 4">
-        </div>
+        <div class="gallery-images" id="image-gallery"></div>
     </section>
 
-    <!-- Contact Section -->
-    <section class="contact">
-        <h2>Contact Us</h2>
-        <form action="#">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" rows="6" required></textarea>
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
+    <script>
+        // Folder path where the images are located
+        const folderPath = "https://raw.githubusercontent.com/AhsanGilman/Tour/main/images/"; // Modify with your folder path
 
-    <!-- Footer Section -->
-    <footer>
-        <p>Created by Class of 2025 | <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
-    </footer>
+        // List of all image filenames (manually added or generated via script)
+        const imageFiles = [
+            "20241207_002109.jpg",
+            "20241207_002133.jpg",
+            "20241207_131752.jpg",
+            "20241207_131755.jpg"  // Add more image files as needed
+        ];
+
+        // Get the container where images will be displayed
+        const imageGallery = document.getElementById('image-gallery');
+
+        // Loop through each image filename and create an image element
+        imageFiles.forEach((file) => {
+            const img = document.createElement('img');
+            img.src = folderPath + file;
+            img.alt = file;
+            imageGallery.appendChild(img);
+        });
+    </script>
 
 </body>
 </html>
