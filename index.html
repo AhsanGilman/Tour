@@ -50,31 +50,39 @@
 
         const container = document.getElementById("image-gallery");
 
-        // CORS Proxy URL
-        const corsProxy = "https://api.allorigins.win/raw?url=";
+        const token = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN';  // Replace with your GitHub Personal Access Token
 
-        // Fetch the list of files in the "images" folder via the CORS proxy
-        fetch(corsProxy + encodeURIComponent(`https://api.github.com/repos/${owner}/${repo}/contents/${folder}`))
-            .then(response => response.json())
-            .then(files => {
-                files.forEach(file => {
-                    if (file.type === 'file' && (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png'))) {
-                        const imgElement = document.createElement("div");
-                        imgElement.classList.add("image-item");
+        // GitHub API URL
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${folder}`;
 
-                        const img = document.createElement("img");
-                        img.src = file.download_url;
-                        img.alt = file.name;
+        // Fetch the list of files in the "images" folder with authentication
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `token ${token}`,  // Use the token for authentication
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        })
+        .then(response => response.json())
+        .then(files => {
+            files.forEach(file => {
+                if (file.type === 'file' && (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png'))) {
+                    const imgElement = document.createElement("div");
+                    imgElement.classList.add("image-item");
 
-                        imgElement.appendChild(img);
-                        container.appendChild(imgElement);
-                    }
-                });
-            })
-            .catch(error => {
-                console.error("Error fetching image files:", error);
-                container.innerHTML = "<p>Error loading images. Please try again later.</p>";
+                    const img = document.createElement("img");
+                    img.src = file.download_url;
+                    img.alt = file.name;
+
+                    imgElement.appendChild(img);
+                    container.appendChild(imgElement);
+                }
             });
+        })
+        .catch(error => {
+            console.error("Error fetching image files:", error);
+            container.innerHTML = "<p>Error loading images. Please try again later.</p>";
+        });
     </script>
 
 </body>
