@@ -39,35 +39,39 @@
 
     <h1 style="text-align: center; padding: 20px;">My Photo Gallery</h1>
 
-    <div class="container">
+    <div class="container" id="image-gallery">
         <!-- Images will be inserted here dynamically -->
     </div>
 
     <script>
-        // Array of image filenames (manually or dynamically fetched)
-        const images = [
-            "image1.jpg",
-            "image2.jpg",
-            "image3.jpg",
-            "image4.jpg",
-            "image5.jpg",
-            // Add more image names here
-        ];
+        const owner = 'YOUR_GITHUB_USERNAME';  // Replace with your GitHub username
+        const repo = 'YOUR_REPO_NAME';         // Replace with your repository name
+        const folder = 'images';               // The folder containing the images
 
-        const container = document.querySelector(".container");
+        const container = document.getElementById("image-gallery");
 
-        // Loop through the images and create image elements
-        images.forEach((image) => {
-            const imgElement = document.createElement("div");
-            imgElement.classList.add("image-item");
+        // Fetch the list of files in the "images" folder
+        fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${folder}`)
+            .then(response => response.json())
+            .then(files => {
+                files.forEach(file => {
+                    if (file.type === 'file' && (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg') || file.name.endsWith('.png'))) {
+                        const imgElement = document.createElement("div");
+                        imgElement.classList.add("image-item");
 
-            const img = document.createElement("img");
-            img.src = `images/${image}`; // Assuming images are in the 'images' folder
-            img.alt = image;
+                        const img = document.createElement("img");
+                        img.src = file.download_url;
+                        img.alt = file.name;
 
-            imgElement.appendChild(img);
-            container.appendChild(imgElement);
-        });
+                        imgElement.appendChild(img);
+                        container.appendChild(imgElement);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching image files:", error);
+                container.innerHTML = "<p>Error loading images. Please try again later.</p>";
+            });
     </script>
 
 </body>
