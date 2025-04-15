@@ -3,96 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Photo Gallery</title>
+    <title>Photo Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
         }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .gallery {
+        .container {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(5, 1fr); /* 5 images per row on PC */
             gap: 15px;
             padding: 20px;
         }
-
-        .gallery img {
+        .image-item {
             width: 100%;
             height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        /* Mobile responsiveness */
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
         @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(1, 1fr);
-            }
-        }
-
-        /* Tablet responsiveness */
-        @media (max-width: 1024px) {
-            .gallery {
-                grid-template-columns: repeat(3, 1fr);
+            .container {
+                grid-template-columns: 1fr; /* 1 image per row on mobile */
             }
         }
     </style>
 </head>
 <body>
 
-    <h1>My Photo Gallery</h1>
+    <h1 style="text-align: center; padding: 20px;">My Photo Gallery</h1>
 
-    <div class="gallery" id="gallery">
-        <!-- Images will be loaded here -->
+    <div class="container">
+        <!-- Images will be inserted here dynamically -->
     </div>
 
     <script>
-        // GitHub API URL to get the contents of the images folder
-        const repoOwner = 'YOUR_GITHUB_USERNAME';  // Replace with your GitHub username
-        const repoName = 'YOUR_REPOSITORY_NAME';  // Replace with your repository name
-        const folderPath = 'images';  // Folder where images are stored
+        // Array of image filenames (manually or dynamically fetched)
+        const images = [
+            "image1.jpg",
+            "image2.jpg",
+            "image3.jpg",
+            "image4.jpg",
+            "image5.jpg",
+            // Add more image names here
+        ];
 
-        // Fetch the list of images from the GitHub repository
-        async function fetchImageList() {
-            const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
+        const container = document.querySelector(".container");
 
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+        // Loop through the images and create image elements
+        images.forEach((image) => {
+            const imgElement = document.createElement("div");
+            imgElement.classList.add("image-item");
 
-                if (Array.isArray(data)) {
-                    data.forEach(item => {
-                        if (item.type === 'file' && (item.name.endsWith('.jpg') || item.name.endsWith('.png') || item.name.endsWith('.jpeg'))) {
-                            addImageToGallery(item.download_url);
-                        }
-                    });
-                } else {
-                    console.error('Failed to retrieve images from GitHub API');
-                }
-            } catch (error) {
-                console.error('Error fetching image list from GitHub:', error);
-            }
-        }
+            const img = document.createElement("img");
+            img.src = `images/${image}`; // Assuming images are in the 'images' folder
+            img.alt = image;
 
-        // Add image to gallery
-        function addImageToGallery(imageUrl) {
-            const gallery = document.getElementById('gallery');
-            const imgElement = document.createElement('img');
-            imgElement.src = imageUrl;
-            imgElement.alt = 'Image';
-            gallery.appendChild(imgElement);
-        }
-
-        // Load images on page load
-        window.onload = fetchImageList;
+            imgElement.appendChild(img);
+            container.appendChild(imgElement);
+        });
     </script>
 
 </body>
