@@ -52,48 +52,12 @@
 
     <div class="gallery" id="gallery">
         <!-- Images will be loaded here -->
+        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/images/20241207_002109.jpg" alt="Image 1">
+        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/images/20241207_002133.jpg" alt="Image 2">
+        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/images/20241207_131752.jpg" alt="Image 3">
+        <img src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/main/images/20241207_131755.jpg" alt="Image 4">
+        <!-- Add more images here as needed -->
     </div>
-
-    <script>
-        // GitHub API URL to get the contents of the images folder
-        const repoOwner = 'YOUR_GITHUB_USERNAME';  // Replace with your GitHub username
-        const repoName = 'YOUR_REPOSITORY_NAME';  // Replace with your repository name
-        const folderPath = 'images';  // Folder where images are stored
-
-        // Fetch the list of images from the GitHub repository
-        async function fetchImageList() {
-            const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                if (Array.isArray(data)) {
-                    data.forEach(item => {
-                        if (item.type === 'file' && (item.name.endsWith('.jpg') || item.name.endsWith('.png') || item.name.endsWith('.jpeg'))) {
-                            addImageToGallery(item.download_url);
-                        }
-                    });
-                } else {
-                    console.error('Failed to retrieve images from GitHub API');
-                }
-            } catch (error) {
-                console.error('Error fetching image list from GitHub:', error);
-            }
-        }
-
-        // Add image to gallery
-        function addImageToGallery(imageUrl) {
-            const gallery = document.getElementById('gallery');
-            const imgElement = document.createElement('img');
-            imgElement.src = imageUrl;
-            imgElement.alt = 'Image';
-            gallery.appendChild(imgElement);
-        }
-
-        // Load images on page load
-        window.onload = fetchImageList;
-    </script>
 
 </body>
 </html>
